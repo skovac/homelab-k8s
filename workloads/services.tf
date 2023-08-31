@@ -106,3 +106,18 @@ resource "kubernetes_service" "nextcloud" {
     load_balancer_ip = local.nextcloud_lb_ip
   }
 }
+
+resource "kubernetes_service" "postrges-nc" {
+  metadata {
+    name = "postgres-nc"
+  }
+  spec {
+    selector = {
+      app = kubernetes_pod.postgres-nc.metadata.0.labels.app
+    }
+    port {
+      port = 5432
+      target_port = 5432
+    }
+  }
+}
