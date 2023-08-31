@@ -20,4 +20,5 @@ locals {
   nginx_lb_ip = "${var.ip_prefix}.200"
   nextcloud_lb_ip = "${var.ip_prefix}.220"
   plex_lb_ip = "${var.ip_prefix}.221"
+  qbittorrent_lb_ip = "${var.ip_prefix}.222"
 }

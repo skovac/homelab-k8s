@@ -121,3 +121,24 @@ resource "kubernetes_service" "postrges-nc" {
     }
   }
 }
+
+resource "kubernetes_service" "qbittorrent" {
+  metadata {
+    name = "qbittorrent"
+    annotations = {
+        "metallb.universe.tf/address-pool" = "ip-address-pool"        
+    }
+  }
+  spec {
+    selector = {
+      app = kubernetes_pod.qbittorrent.metadata.0.labels.app
+    }
+    port {
+      port        = 80
+      target_port = 8080
+    }
+
+    type = "LoadBalancer"
+    load_balancer_ip = local.qbittorrent_lb_ip
+  }
+}
