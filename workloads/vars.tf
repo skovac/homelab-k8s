@@ -8,6 +8,12 @@ variable "nfs_mount_path" {
   default = "/srv/nfs/"
 }
 
+
+variable "postgres_nc_pw" {
+  type = string
+}
+
+
 locals {
   nfs_server_ip = "${var.ip_prefix}.26"
 
