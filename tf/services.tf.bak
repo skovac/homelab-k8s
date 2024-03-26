@@ -1,9 +1,6 @@
 resource "kubernetes_service" "nginx" {
   metadata {
     name = "nginx"
-    annotations = {
-        "metallb.universe.tf/address-pool" = "ip-address-pool"        
-    }
   }
   spec {
     selector = {
@@ -22,9 +19,6 @@ resource "kubernetes_service" "nginx" {
 resource "kubernetes_service" "plex" {
   metadata {
     name = "plex"
-    annotations = {
-        "metallb.universe.tf/address-pool" = "ip-address-pool"        
-    }
   }
   spec {
     selector = {
@@ -89,9 +83,6 @@ resource "kubernetes_service" "plex" {
 resource "kubernetes_service" "nextcloud" {
   metadata {
     name = "nextcloud"
-    annotations = {
-        "metallb.universe.tf/address-pool" = "ip-address-pool"        
-    }
   }
   spec {
     selector = {
@@ -125,9 +116,6 @@ resource "kubernetes_service" "postrges-nc" {
 resource "kubernetes_service" "qbittorrent" {
   metadata {
     name = "qbittorrent"
-    annotations = {
-        "metallb.universe.tf/address-pool" = "ip-address-pool"        
-    }
   }
   spec {
     selector = {
