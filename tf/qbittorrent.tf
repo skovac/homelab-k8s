@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "qbittorrent" {
         }
         
         container {
-          image = "ghcr.io/qdm12/gluetun"
+          image = "ghcr.io/qdm12/gluetun:v3.39.1"
           name = "gluetun"
           image_pull_policy = "Always"
           security_context {
