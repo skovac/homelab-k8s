@@ -1,0 +1,10 @@
+# Contact address for the ACME account. Required.
+email: ""
+
+# IngressClass cert-manager uses for the temporary HTTP-01 solver Ingress.
+ingressClassName: traefik
+
+# ClusterIssuer name -> ACME directory.
+issuers:
+  letsencrypt-staging: https://acme-staging-v02.api.letsencrypt.org/directory
+  letsencrypt-prod: https://acme-v02.api.letsencrypt.org/directory

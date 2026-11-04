@@ -1,0 +1,8 @@
+apiVersion: v2
+name: cluster-issuers
+description: >-
+  Let's Encrypt ClusterIssuers for cert-manager. Shipped as a local chart so
+  Terraform can create them in the same apply that installs cert-manager
+  (kubernetes_manifest would need the CRDs to exist already at plan time).
+type: application
+version: 0.1.0

@@ -1,0 +1,84 @@
+# Traefik on a single-node VPS: binds 80/443 directly on the host network
+# (no LoadBalancer available), terminates TLS with certificates issued by
+# cert-manager, and routes standard Kubernetes Ingress objects.
+
+deployment:
+  kind: DaemonSet
+  # Host-network pods need this to still resolve cluster DNS names.
+  dnsPolicy: ClusterFirstWithHostNet
+
+# Old and new pod can't hold ports 80/443 at the same time, so updates must
+# stop the old pod first (short blip on upgrade) instead of surging.
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 0
+
+hostNetwork: true
+
+# Nothing to load-balance on one node; Traefik listens on the host directly.
+service:
+  enabled: false
+
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+  name: traefik
+
+providers:
+  kubernetesIngress:
+    # Needed for the Nextcloud AIO backend, which runs in Docker on the host
+    # (see kubernetes_service_v1.nextcloud in ingress.tf).
+    allowExternalNameServices: true
+    # Would point at the disabled Service and only produce errors.
+    publishedService:
+      enabled: false
+
+ports:
+  # Internal entrypoint (ping/health probes). Default 8080 collides with the
+  # Nextcloud AIO admin interface on the host, so move it.
+  traefik:
+    port: 9180
+  web:
+    port: 80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    port: 443
+    transport:
+      respondingTimeouts:
+        # Traefik v3 defaults to 60s for reading the whole request, which
+        # breaks large Nextcloud uploads. 0 disables the limit.
+        readTimeout: 0
+  # No Prometheus here. Removing the entrypoint also avoids binding host
+  # port 9100 (with hostNetwork every entrypoint listens on the host).
+  metrics: null
+
+metrics:
+  prometheus: null
+
+# Nothing routes to the dashboard; keep the API surface off.
+api:
+  dashboard: false
+
+# Binding ports < 1024 on the host network needs NET_BIND_SERVICE, which only
+# takes effect for uid 0. Everything else stays locked down: all other
+# capabilities dropped, no privilege escalation, read-only root filesystem.
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+  runAsNonRoot: false
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: [ALL]
+    add: [NET_BIND_SERVICE]

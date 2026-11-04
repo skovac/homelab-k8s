@@ -40,41 +40,41 @@ resource "kubernetes_deployment" "plex" {
           name  = "plex"
 
           volume_mount {
-            name = "library"
+            name       = "library"
             mount_path = "/data"
           }
           volume_mount {
-            name = "config"
+            name       = "config"
             mount_path = "/config"
           }
 
           port {
             container_port = 32400
           }
-          port {
-            container_port = 3005
-          }
-          port {
-            container_port = 8324
-          }
-          port {
-            container_port = 32469
-          }
-          port {
-            container_port = 1900
-          }
-          port {
-            container_port = 32410
-          }
-          port {
-            container_port = 32412
-          }
-          port {
-            container_port = 32413
-          }
-          port {
-            container_port = 32414
-          }
+          #          port {
+          #            container_port = 3005
+          #          }
+          #          port {
+          #            container_port = 8324
+          #          }
+          #          port {
+          #            container_port = 32469
+          #          }
+          #          port {
+          #            container_port = 1900
+          #          }
+          #          port {
+          #            container_port = 32410
+          #          }
+          #          port {
+          #            container_port = 32412
+          #          }
+          #          port {
+          #            container_port = 32413
+          #          }
+          #          port {
+          #            container_port = 32414
+          #          }
         }
       }
     }

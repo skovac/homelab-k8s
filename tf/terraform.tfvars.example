@@ -1,1 +1,5 @@
-postgres_nc_pw = "superpassword
+postgres_nc_pw = "superpassword"
+qbit_pw        = "pbkdf2-hash"
+proton_user    = "openvpn-user"
+proton_pw      = "openvpn-password"
+acme_email     = "you@example.com"
